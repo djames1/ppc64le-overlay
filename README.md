@@ -13,3 +13,4 @@ To install this overlay, please run the following:
     * Disable `jemalloc`. Supposedly this isn't needed as of Firefox 65, but we do it anways to be safe.
     * Set the `system-*` use flags not to be set by default.
     * Set the keywords to `~ppc64`
+    * Add patches to fix isues segfaults when typing in URL bar

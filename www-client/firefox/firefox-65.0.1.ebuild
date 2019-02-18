@@ -6,10 +6,6 @@ VIRTUALX_REQUIRED="pgo"
 WANT_AUTOCONF="2.1"
 MOZ_ESR=""
 
-PATCHES=(
-	"${FILESDIR}/disable-stack-protection-xpconnect-ppc64le.patch"
-	"${FILESDIR}/narrow-nonstack-protected-window-ppc64le.patch"
-)
 PYTHON_COMPAT=( python3_{5,6,7} )
 PYTHON_REQ_USE='ncurses,sqlite,ssl,threads(+)'
 
@@ -198,6 +194,8 @@ src_unpack() {
 
 src_prepare() {
 	eapply "${WORKDIR}/firefox"
+	eapply "${FILESDIR}/disable-stack-protection-xpconnect-ppc64le.patch"
+	eapply "${FILESDIR}/narrow-nonstack-protected-window-ppc64le.patch"
 
 	# Allow user to apply any additional patches without modifing ebuild
 	eapply_user
