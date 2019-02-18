@@ -43,9 +43,9 @@ SLOT="0"
 LICENSE="MPL-2.0 GPL-2 LGPL-2.1"
 IUSE="bindist clang cpu_flags_x86_avx2 dbus debug eme-free geckodriver
 	+gmp-autoupdate hardened hwaccel jack lto neon pgo pulseaudio
-	+screenshot selinux startup-notification +system-harfbuzz
-	+system-icu +system-jpeg +system-libevent +system-sqlite
-	+system-libvpx +system-webp test wayland wifi"
+	+screenshot selinux startup-notification -system-harfbuzz
+	-system-icu -system-jpeg -system-libevent -system-sqlite
+	-system-libvpx -system-webp test wayland wifi"
 RESTRICT="!bindist? ( bindist )"
 
 PATCH_URIS=( https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz )
@@ -432,7 +432,7 @@ src_configure() {
 		mozconfig_annotate '' --enable-rust-simd
 	fi
 
-	##This is no longer true as of Firefox 65. enable skia always.
+	##This is no longer needed as of Firefox 65. enable skia always.
 
 	## skia has no support for big-endian platforms
 	#if [[ $(tc-endian) == "big" ]] ; then
@@ -440,8 +440,10 @@ src_configure() {
 	#else
 	#	mozconfig_annotate '' --enable-skia
 	#fi
-
 	mozconfig_annotate '' --enable-skia
+
+	#Supposedly jemalloc works on PPC64le as of Firefox 65. Disable it anyways just to be safe.
+	mozconfig_annotate 'Potential ppc64le breakage' --disable-jemalloc
 
 	# use the gtk3 toolkit (the only one supported at this point)
 	# TODO: Will this result in automagic dependency on x11-libs/gtk+[wayland]?

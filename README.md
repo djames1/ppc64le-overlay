@@ -10,3 +10,5 @@ To install this overlay, please run the following:
     * Gentoo by default builds with `--enable-release`. This causes segfaults on ppc64le. We build it with `--disable-release`.
     * Disable gold linker as it will fail during linking on ppc64le
     * Always enable skia as it is required in newer firefox. This will be helpful for big endian users.
+    * Disable `jemalloc`. Supposedly this isn't needed as of Firefox 65, but we do it anways to be safe.
+    * Set the `system-*` use flags not to be set by default.
