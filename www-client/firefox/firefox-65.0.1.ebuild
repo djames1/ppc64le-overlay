@@ -6,6 +6,10 @@ VIRTUALX_REQUIRED="pgo"
 WANT_AUTOCONF="2.1"
 MOZ_ESR=""
 
+PATCHES=(
+	"${FILESDIR}/disable-stack-protection-xpconnect-ppc64le.patch"
+	"${FILESDIR}/narrow-nonstack-protected-window-ppc64le.patch"
+)
 PYTHON_COMPAT=( python3_{5,6,7} )
 PYTHON_REQ_USE='ncurses,sqlite,ssl,threads(+)'
 
@@ -295,8 +299,7 @@ src_configure() {
 		--with-system-zlib \
 		--with-system-bz2
 
-	## This breaks on ppc64 and ppc64le systems. Disable release
-
+	## EDIT: This breaks on ppc64 and ppc64le systems. Disable release build
 	# Must pass release in order to properly select linker
 	#mozconfig_annotate 'Enable by Gentoo' --enable-release
 
@@ -360,7 +363,7 @@ src_configure() {
 			# This is upstream's default
 			mozconfig_annotate "forcing ld=lld due to USE=clang" --enable-linker=lld
 		
-		## Gold linker causes issues on ppc64
+		## EDIT: Gold linker causes issues on ppc64
 		#elif tc-ld-is-gold ; then
 		#	mozconfig_annotate "linker is set to gold" --enable-linker=gold
 
@@ -432,7 +435,7 @@ src_configure() {
 		mozconfig_annotate '' --enable-rust-simd
 	fi
 
-	##This is no longer needed as of Firefox 65. enable skia always.
+	##EDIT: This is no longer needed as of Firefox 65. enable skia always.
 
 	## skia has no support for big-endian platforms
 	#if [[ $(tc-endian) == "big" ]] ; then
@@ -442,7 +445,7 @@ src_configure() {
 	#fi
 	mozconfig_annotate '' --enable-skia
 
-	#Supposedly jemalloc works on PPC64le as of Firefox 65. Disable it anyways just to be safe.
+	## EDIT: Supposedly jemalloc works on PPC64le as of Firefox 65. Disable it anyways just to be safe.
 	mozconfig_annotate 'Potential ppc64le breakage' --disable-jemalloc
 
 	# use the gtk3 toolkit (the only one supported at this point)

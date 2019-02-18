@@ -12,3 +12,4 @@ To install this overlay, please run the following:
     * Always enable skia as it is required in newer firefox. This will be helpful for big endian users.
     * Disable `jemalloc`. Supposedly this isn't needed as of Firefox 65, but we do it anways to be safe.
     * Set the `system-*` use flags not to be set by default.
+    * Set the keywords to `~ppc64`
