@@ -194,8 +194,6 @@ src_unpack() {
 
 src_prepare() {
 	eapply "${WORKDIR}/firefox"
-	eapply "${FILESDIR}/disable-stack-protection-xpconnect-ppc64le.patch"
-	eapply "${FILESDIR}/narrow-nonstack-protected-window-ppc64le.patch"
 
 	# Allow user to apply any additional patches without modifing ebuild
 	eapply_user
@@ -292,10 +290,12 @@ src_configure() {
 	####################################
 
 	mozconfig_init
-	# common config components
-	mozconfig_annotate 'system_libs' \
-		--with-system-zlib \
-		--with-system-bz2
+	
+	## common config components
+	##EDIT: Don't do this on ppc64le
+	#mozconfig_annotate 'system_libs' \
+	#	--with-system-zlib \
+	#	--with-system-bz2
 
 	## EDIT: This breaks on ppc64 and ppc64le systems. Disable release build
 	# Must pass release in order to properly select linker
@@ -414,11 +414,14 @@ src_configure() {
 	mozconfig_annotate '' --prefix="${EPREFIX}"/usr
 	mozconfig_annotate '' --libdir="${EPREFIX}"/usr/$(get_libdir)
 	mozconfig_annotate '' --disable-crashreporter
-	mozconfig_annotate 'Gentoo default' --with-system-png
-	mozconfig_annotate '' --enable-system-ffi
+	##EDIT: Don't do these on ppc64le
+	#mozconfig_annotate 'Gentoo default' --with-system-png
+	#mozconfig_annotate '' --enable-system-ffi
 	mozconfig_annotate '' --disable-gconf
 	mozconfig_annotate '' --with-intl-api
-	mozconfig_annotate '' --enable-system-pixman
+	##EDIT: Don't do this on ppc64le
+	#mozconfig_annotate '' --enable-system-pixman
+
 	# Instead of the standard --build= and --host=, mozilla uses --host instead
 	# of --build, and --target intstead of --host.
 	# Note, mozilla also has --build but it does not do what you think it does.
@@ -429,9 +432,10 @@ src_configure() {
 		mozconfig_annotate '' --with-system-libevent="${SYSROOT}${EPREFIX}"/usr
 	fi
 
-	if ! use x86 && [[ ${CHOST} != armv*h* ]] ; then
-		mozconfig_annotate '' --enable-rust-simd
-	fi
+	##EDIT: Don't do this on ppc64le
+	#if ! use x86 && [[ ${CHOST} != armv*h* ]] ; then
+	#	mozconfig_annotate '' --enable-rust-simd
+	#fi
 
 	##EDIT: This is no longer needed as of Firefox 65. enable skia always.
 
@@ -466,10 +470,12 @@ src_configure() {
 
 	# Disable built-in ccache support to avoid sandbox violation, #665420
 	# Use FEATURES=ccache instead!
-	mozconfig_annotate '' --without-ccache
-	sed -i -e 's/ccache_stats = None/return None/' \
-		python/mozbuild/mozbuild/controller/building.py || \
-		die "Failed to disable ccache stats call"
+
+	##EDIT: not sure if needed on ppc64le.	
+	#mozconfig_annotate '' --without-ccache
+	#sed -i -e 's/ccache_stats = None/return None/' \
+	#	python/mozbuild/mozbuild/controller/building.py || \
+	#	die "Failed to disable ccache stats call"
 
 	mozconfig_use_enable dbus
 
