@@ -9,3 +9,4 @@ To install this overlay, please run the following:
 * `www-client/firefox`
     * Gentoo by default builds with --enable-release. This segfaults on ppc64le. We build it with --disable-release.
     * Disable gold linker as it will fail during linking on ppc64le
+    * Always enable skia as it is required in newer firefox. This will be helpful for big endian users.
