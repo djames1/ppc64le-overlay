@@ -1,5 +1,5 @@
 # ppc64le-overlay
-Gentoo Overlay for PPC64LE Patches/Fixes
+Gentoo Overlay for PPC64 Little Endian Patches/Fixes. This overlay may be useful for big endian users as well.
 
 ## Installing Overlay
 To install this overlay, please run the following:
