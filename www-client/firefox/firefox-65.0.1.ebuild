@@ -295,7 +295,8 @@ src_configure() {
 		--with-system-zlib \
 		--with-system-bz2
 
-	## This breaks on ppc64 and ppc64le systems
+	## This breaks on ppc64 and ppc64le systems. Disable release
+
 	# Must pass release in order to properly select linker
 	#mozconfig_annotate 'Enable by Gentoo' --enable-release
 
@@ -358,8 +359,11 @@ src_configure() {
 		if use clang ; then
 			# This is upstream's default
 			mozconfig_annotate "forcing ld=lld due to USE=clang" --enable-linker=lld
-		elif tc-ld-is-gold ; then
-			mozconfig_annotate "linker is set to gold" --enable-linker=gold
+		
+		## Gold linker causes issues on ppc64
+		#elif tc-ld-is-gold ; then
+		#	mozconfig_annotate "linker is set to gold" --enable-linker=gold
+
 		else
 			mozconfig_annotate "linker is set to bfd" --enable-linker=bfd
 		fi
@@ -428,12 +432,16 @@ src_configure() {
 		mozconfig_annotate '' --enable-rust-simd
 	fi
 
-	# skia has no support for big-endian platforms
-	if [[ $(tc-endian) == "big" ]] ; then
-		mozconfig_annotate 'big endian target' --disable-skia
-	else
-		mozconfig_annotate '' --enable-skia
-	fi
+	##This is no longer true as of Firefox 65. enable skia always.
+
+	## skia has no support for big-endian platforms
+	#if [[ $(tc-endian) == "big" ]] ; then
+	#	mozconfig_annotate 'big endian target' --disable-skia
+	#else
+	#	mozconfig_annotate '' --enable-skia
+	#fi
+
+	mozconfig_annotate '' --enable-skia
 
 	# use the gtk3 toolkit (the only one supported at this point)
 	# TODO: Will this result in automagic dependency on x11-libs/gtk+[wayland]?
