@@ -255,7 +255,7 @@ src_prepare() {
 }
 
 src_configure() {
-	MEXTENSIONS="default"
+	#MEXTENSIONS="default"
 	# Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 	# Note: These are for Gentoo Linux use ONLY. For your own distribution, please
 	# get your own set of keys.
@@ -399,13 +399,13 @@ src_configure() {
 
 	mozconfig_use_enable !bindist official-branding
 
-	mozconfig_use_enable debug
-	mozconfig_use_enable debug tests
-	if ! use debug ; then
-		mozconfig_annotate 'disabled by Gentoo' --disable-debug-symbols
-	else
-		mozconfig_annotate 'enabled by Gentoo' --enable-debug-symbols
-	fi
+	#mozconfig_use_enable debug
+	#mozconfig_use_enable debug tests
+	#if ! use debug ; then
+	#	mozconfig_annotate 'disabled by Gentoo' --disable-debug-symbols
+	#else
+	#	mozconfig_annotate 'enabled by Gentoo' --enable-debug-symbols
+	#fi
 	# These are enabled by default in all mozilla applications
 	#mozconfig_annotate '' --with-system-nspr --with-nspr-prefix="${SYSROOT}${EPREFIX}"/usr
 	#mozconfig_annotate '' --with-system-nss --with-nss-prefix="${SYSROOT}${EPREFIX}"/usr
@@ -428,9 +428,9 @@ src_configure() {
 	# Set both --target and --host as mozilla uses python to guess values otherwise
 	mozconfig_annotate '' --target="${CHOST}"
 	mozconfig_annotate '' --host="${CBUILD:-${CHOST}}"
-	if use system-libevent ; then
-		mozconfig_annotate '' --with-system-libevent="${SYSROOT}${EPREFIX}"/usr
-	fi
+	#if use system-libevent ; then
+	#	mozconfig_annotate '' --with-system-libevent="${SYSROOT}${EPREFIX}"/usr
+	#fi
 
 	##EDIT: Don't do this on ppc64le
 	#if ! use x86 && [[ ${CHOST} != armv*h* ]] ; then
@@ -454,14 +454,14 @@ src_configure() {
 	# TODO: Will this result in automagic dependency on x11-libs/gtk+[wayland]?
 	#mozconfig_annotate '' --enable-default-toolkit=cairo-gtk3
 
-	mozconfig_use_enable startup-notification
-	mozconfig_use_enable system-sqlite
-	mozconfig_use_with system-harfbuzz
-	mozconfig_use_with system-harfbuzz system-graphite2
-	mozconfig_use_with system-icu
-	mozconfig_use_with system-jpeg
-	mozconfig_use_with system-libvpx
-	mozconfig_use_with system-webp
+	#mozconfig_use_enable startup-notification
+	#mozconfig_use_enable system-sqlite
+	#mozconfig_use_with system-harfbuzz
+	#mozconfig_use_with system-harfbuzz system-graphite2
+	#mozconfig_use_with system-icu
+	#mozconfig_use_with system-jpeg
+	#mozconfig_use_with system-libvpx
+	#mozconfig_use_with system-webp
 	mozconfig_use_enable pulseaudio
 	# force the deprecated alsa sound code if pulseaudio is disabled
 	if use kernel_linux && ! use pulseaudio ; then
@@ -502,13 +502,13 @@ src_configure() {
 	# when they would normally be larger than 2GiB.
 	#append-ldflags "-Wl,--compress-debug-sections=zlib"
 
-	if use clang ; then
+	#if use clang ; then
 		# https://bugzilla.mozilla.org/show_bug.cgi?id=1482204
 		# https://bugzilla.mozilla.org/show_bug.cgi?id=1483822
-		mozconfig_annotate 'elf-hack is broken when using Clang' --disable-elf-hack
-	fi
+	#	mozconfig_annotate 'elf-hack is broken when using Clang' --disable-elf-hack
+	#fi
 
-	#echo "mk_add_options MOZ_OBJDIR=${BUILD_OBJ_DIR}" >> "${S}"/.mozconfig
+	echo "mk_add_options MOZ_OBJDIR=${BUILD_OBJ_DIR}" >> "${S}"/.mozconfig
 	echo "mk_add_options XARGS=/usr/bin/xargs" >> "${S}"/.mozconfig
 
 	# Finalize and report settings
