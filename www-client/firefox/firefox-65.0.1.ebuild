@@ -300,7 +300,7 @@ src_configure() {
 	# Must pass release in order to properly select linker
 	#mozconfig_annotate 'Enable by Gentoo' --enable-release
 
-	mozconfg_annotate 'Breaks on ppc64' --disable-release
+	mozconfig_annotate 'Breaks on ppc64' --disable-release
 
 	# Don't let user's LTO flags clash with upstream's flags
 	filter-flags -flto*
