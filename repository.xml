@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<repositories version="1.0">
+	<repo priority="50" quality="experimental" status="unofficial">
+		<name>arcticfox</name>
+		<description>Unofficial Gentoo overlay for PPC64LE Fixes</description>
+		<homepage>https://github.com/djames1/ppc64le-overlay</homepage>
+		<owner>
+			<email>djames@orcadian.net</email>
+		</owner>
+		<source type="git">https://github.com/djames1/ppc64le-overlay.git</source>
+	</repo>
+</repositories>
