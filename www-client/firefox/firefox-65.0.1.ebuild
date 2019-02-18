@@ -407,18 +407,18 @@ src_configure() {
 		mozconfig_annotate 'enabled by Gentoo' --enable-debug-symbols
 	fi
 	# These are enabled by default in all mozilla applications
-	mozconfig_annotate '' --with-system-nspr --with-nspr-prefix="${SYSROOT}${EPREFIX}"/usr
-	mozconfig_annotate '' --with-system-nss --with-nss-prefix="${SYSROOT}${EPREFIX}"/usr
-	mozconfig_annotate '' --x-includes="${SYSROOT}${EPREFIX}"/usr/include \
-		--x-libraries="${SYSROOT}${EPREFIX}"/usr/$(get_libdir)
+	#mozconfig_annotate '' --with-system-nspr --with-nspr-prefix="${SYSROOT}${EPREFIX}"/usr
+	#mozconfig_annotate '' --with-system-nss --with-nss-prefix="${SYSROOT}${EPREFIX}"/usr
+	#mozconfig_annotate '' --x-includes="${SYSROOT}${EPREFIX}"/usr/include \
+	#	--x-libraries="${SYSROOT}${EPREFIX}"/usr/$(get_libdir)
 	mozconfig_annotate '' --prefix="${EPREFIX}"/usr
 	mozconfig_annotate '' --libdir="${EPREFIX}"/usr/$(get_libdir)
-	mozconfig_annotate '' --disable-crashreporter
+	#mozconfig_annotate '' --disable-crashreporter
 	##EDIT: Don't do these on ppc64le
 	#mozconfig_annotate 'Gentoo default' --with-system-png
 	#mozconfig_annotate '' --enable-system-ffi
-	mozconfig_annotate '' --disable-gconf
-	mozconfig_annotate '' --with-intl-api
+	#mozconfig_annotate '' --disable-gconf
+	#mozconfig_annotate '' --with-intl-api
 	##EDIT: Don't do this on ppc64le
 	#mozconfig_annotate '' --enable-system-pixman
 
@@ -445,14 +445,14 @@ src_configure() {
 	#else
 	#	mozconfig_annotate '' --enable-skia
 	#fi
-	mozconfig_annotate '' --enable-skia
+	#mozconfig_annotate '' --enable-skia
 
 	## EDIT: Supposedly jemalloc works on PPC64le as of Firefox 65. Disable it anyways just to be safe.
 	mozconfig_annotate 'Potential ppc64le breakage' --disable-jemalloc
 
 	# use the gtk3 toolkit (the only one supported at this point)
 	# TODO: Will this result in automagic dependency on x11-libs/gtk+[wayland]?
-	mozconfig_annotate '' --enable-default-toolkit=cairo-gtk3
+	#mozconfig_annotate '' --enable-default-toolkit=cairo-gtk3
 
 	mozconfig_use_enable startup-notification
 	mozconfig_use_enable system-sqlite
@@ -479,28 +479,28 @@ src_configure() {
 
 	mozconfig_use_enable dbus
 
-	mozconfig_use_enable wifi necko-wifi
+	#mozconfig_use_enable wifi necko-wifi
 
-	mozconfig_use_enable geckodriver
+	#mozconfig_use_enable geckodriver
 
 	# enable JACK, bug 600002
-	mozconfig_use_enable jack
+	#mozconfig_use_enable jack
 
 	# Enable/Disable eme support
 	use eme-free && mozconfig_annotate '+eme-free' --disable-eme
 
 	# Setup api key for location services
-	echo -n "${_google_api_key}" > "${S}"/google-api-key
-	mozconfig_annotate '' --with-google-api-keyfile="${S}/google-api-key"
+	#echo -n "${_google_api_key}" > "${S}"/google-api-key
+	#mozconfig_annotate '' --with-google-api-keyfile="${S}/google-api-key"
 
-	mozconfig_annotate '' --enable-extensions="${MEXTENSIONS}"
+	#mozconfig_annotate '' --enable-extensions="${MEXTENSIONS}"
 
 	# disable webrtc for now, bug 667642
-	use arm && mozconfig_annotate 'broken on arm' --disable-webrtc
+	#use arm && mozconfig_annotate 'broken on arm' --disable-webrtc
 
 	# allow elfhack to work in combination with unstripped binaries
 	# when they would normally be larger than 2GiB.
-	append-ldflags "-Wl,--compress-debug-sections=zlib"
+	#append-ldflags "-Wl,--compress-debug-sections=zlib"
 
 	if use clang ; then
 		# https://bugzilla.mozilla.org/show_bug.cgi?id=1482204
@@ -508,8 +508,8 @@ src_configure() {
 		mozconfig_annotate 'elf-hack is broken when using Clang' --disable-elf-hack
 	fi
 
-	echo "mk_add_options MOZ_OBJDIR=${BUILD_OBJ_DIR}" >> "${S}"/.mozconfig
-	echo "mk_add_options XARGS=/usr/bin/xargs" >> "${S}"/.mozconfig
+	#echo "mk_add_options MOZ_OBJDIR=${BUILD_OBJ_DIR}" >> "${S}"/.mozconfig
+	#echo "mk_add_options XARGS=/usr/bin/xargs" >> "${S}"/.mozconfig
 
 	# Finalize and report settings
 	mozconfig_final
