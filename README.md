@@ -12,7 +12,7 @@ To install this overlay, please run the following:
     * Add the following to `/etc/portage/package.accept_keywords`:
         * `www-client/firefox-bin::ppc64le ~ppc64`
 
-* `mail-client/thunderbid-bin`
+* `mail-client/thunderbird-bin`
     * Thunderbird would not start at all when built with emerge. When building by hand it worked fine.
     * See https://github.com/djames1/thunderbird-ppc64le-bin
     * Add the following to `/etc/portage/package.accept_keywords`:
