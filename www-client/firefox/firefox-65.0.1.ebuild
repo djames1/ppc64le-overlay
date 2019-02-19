@@ -84,9 +84,6 @@ CDEPEND="
 	x11-libs/libXfixes
 	x11-libs/libXrender
 	x11-libs/libXt
-	wifi? ( kernel_linux? ( >=sys-apps/dbus-0.60
-			>=dev-libs/dbus-glib-0.72
-			net-misc/networkmanager ) )
 	jack? ( virtual/jack )
 	selinux? ( sec-policy/selinux-mozilla )"
 
