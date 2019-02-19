@@ -84,16 +84,6 @@ CDEPEND="
 	x11-libs/libXfixes
 	x11-libs/libXrender
 	x11-libs/libXt
-	system-harfbuzz? ( >=media-libs/harfbuzz-1.4.2:0= >=media-gfx/graphite2-1.3.9-r1 )
-	system-icu? ( >=dev-libs/icu-60.2:= )
-	system-jpeg? ( >=media-libs/libjpeg-turbo-1.2.1 )
-	system-libevent? ( >=dev-libs/libevent-2.0:0= )
-	system-libvpx? (
-		>=media-libs/libvpx-1.7.0:0=[postproc]
-		<media-libs/libvpx-1.8
-	)
-	system-sqlite? ( >=dev-db/sqlite-3.25.3:3[secure-delete,debug=] )
-	system-webp? ( >=media-libs/libwebp-1.0.1:0= )
 	wifi? ( kernel_linux? ( >=sys-apps/dbus-0.60
 			>=dev-libs/dbus-glib-0.72
 			net-misc/networkmanager ) )
