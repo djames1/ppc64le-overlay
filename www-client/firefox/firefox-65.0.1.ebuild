@@ -111,10 +111,6 @@ DEPEND="${CDEPEND}
 	>=virtual/cargo-1.30.0
 	>=virtual/rust-1.30.0"
 
-# Due to a bug in GCC, profile guided optimization will produce
-# AVX2 instructions, bug #677052
-REQUIRED_USE="wifi? ( dbus )
-	pgo? ( lto )"
 
 S="${WORKDIR}/firefox-${PV%_*}"
 
