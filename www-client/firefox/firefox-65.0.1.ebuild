@@ -43,9 +43,8 @@ SLOT="0"
 LICENSE="MPL-2.0 GPL-2 LGPL-2.1"
 IUSE="bindist clang cpu_flags_x86_avx2 dbus debug eme-free geckodriver
 	+gmp-autoupdate hardened hwaccel jack lto neon pgo pulseaudio
-	+screenshot selinux startup-notification -system-harfbuzz
-	-system-icu -system-jpeg -system-libevent -system-sqlite
-	-system-libvpx -system-webp test wayland wifi"
+	+screenshot selinux startup-notification "
+
 RESTRICT="!bindist? ( bindist )"
 
 #PATCH_URIS=( https://dev.gentoo.org/~{anarchy,axs,polynomial-c,whissi}/mozilla/patchsets/${PATCH}.tar.xz )
@@ -145,10 +144,6 @@ if [[ -z $GMP_PLUGIN_LIST ]] ; then
 	GMP_PLUGIN_LIST=( gmp-gmpopenh264 gmp-widevinecdm )
 fi
 
-llvm_check_deps() {
-	has_version "sys-devel/clang:${LLVM_SLOT}"
-}
-
 pkg_setup() {
 	moz_pkgsetup
 
@@ -193,26 +188,8 @@ src_unpack() {
 }
 
 src_prepare() {
-	#eapply "${WORKDIR}/firefox"
-
 	# Allow user to apply any additional patches without modifing ebuild
 	eapply_user
-
-	# Enable gnomebreakpad
-	if use debug ; then
-		sed -i -e "s:GNOME_DISABLE_CRASH_DIALOG=1:GNOME_DISABLE_CRASH_DIALOG=0:g" \
-			"${S}"/build/unix/run-mozilla.sh || die "sed failed!"
-	fi
-
-	# Drop -Wl,--as-needed related manipulation for ia64 as it causes ld sefgaults, bug #582432
-	if use ia64 ; then
-		sed -i \
-		-e '/^OS_LIBS += no_as_needed/d' \
-		-e '/^OS_LIBS += as_needed/d' \
-		"${S}"/widget/gtk/mozgtk/gtk2/moz.build \
-		"${S}"/widget/gtk/mozgtk/gtk3/moz.build \
-		|| die "sed failed to drop --as-needed for ia64"
-	fi
 
 	# Ensure that our plugins dir is enabled as default
 	sed -i -e "s:/usr/lib/mozilla/plugins:/usr/lib/nsbrowser/plugins:" \
@@ -239,11 +216,6 @@ src_prepare() {
 	sed '/^MOZ_DEV_EDITION=1/d' \
 		-i "${S}"/browser/branding/aurora/configure.sh || die
 
-	# rustfmt, a tool to format Rust code, is optional and not required to build Firefox.
-	# However, when available, an unsupported version can cause problems, bug #669548
-	sed -i -e "s@check_prog('RUSTFMT', add_rustup_path('rustfmt')@check_prog('RUSTFMT', add_rustup_path('rustfmt_do_not_use')@" \
-		"${S}"/build/moz.configure/rust.configure || die
-
 	# Autotools configure is now called old-configure.in
 	# This works because there is still a configure.in that happens to be for the
 	# shell wrapper configure script
@@ -255,12 +227,6 @@ src_prepare() {
 }
 
 src_configure() {
-	#MEXTENSIONS="default"
-	# Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
-	# Note: These are for Gentoo Linux use ONLY. For your own distribution, please
-	# get your own set of keys.
-	_google_api_key=AIzaSyDEAOvatFo0eTgsV_ZlEzx0ObmepsMzfAc
-
 	# Add information about TERM to output (build.log) to aid debugging
 	# blessings problems
 	if [[ -n "${TERM}" ]] ; then
@@ -269,19 +235,11 @@ src_configure() {
 		einfo "TERM is unset."
 	fi
 
-	if use clang && ! tc-is-clang ; then
-		# Force clang
-		einfo "Enforcing the use of clang due to USE=clang ..."
-		CC=${CHOST}-clang
-		CXX=${CHOST}-clang++
-		strip-unsupported-flags
-	elif ! use clang && ! tc-is-gcc ; then
-		# Force gcc
-		einfo "Enforcing the use of gcc due to USE=-clang ..."
-		CC=${CHOST}-gcc
-		CXX=${CHOST}-g++
-		strip-unsupported-flags
-	fi
+	# Force gcc
+	einfo "Enforcing the use of gcc due to USE=-clang ..."
+	CC=${CHOST}-gcc
+	CXX=${CHOST}-g++
+	strip-unsupported-flags
 
 	####################################
 	#
@@ -290,137 +248,20 @@ src_configure() {
 	####################################
 
 	mozconfig_init
-	
-	## common config components
-	##EDIT: Don't do this on ppc64le
-	#mozconfig_annotate 'system_libs' \
-	#	--with-system-zlib \
-	#	--with-system-bz2
-
-	## EDIT: This breaks on ppc64 and ppc64le systems. Disable release build
-	# Must pass release in order to properly select linker
-	#mozconfig_annotate 'Enable by Gentoo' --enable-release
 
 	mozconfig_annotate 'Breaks on ppc64' --disable-release
 
 	# Don't let user's LTO flags clash with upstream's flags
 	filter-flags -flto*
 
-	if use lto ; then
-		local show_old_compiler_warning=
-
-		if use clang ; then
-			# At this stage CC is adjusted and the following check will
-			# will work
-			if [[ $(clang-major-version) -lt 7 ]] ; then
-				show_old_compiler_warning=1
-			fi
-
-			# Upstream only supports lld when using clang
-			mozconfig_annotate "forcing ld=lld due to USE=clang and USE=lto" --enable-linker=lld
-		else
-			if [[ $(gcc-major-version) -lt 8 ]] ; then
-				show_old_compiler_warning=1
-			fi
-
-			if ! use cpu_flags_x86_avx2 ; then
-				# due to a GCC bug, GCC will produce AVX2 instructions
-				# even if the CPU doesn't support AVX2, https://gcc.gnu.org/ml/gcc-patches/2018-12/msg01142.html
-				einfo "Disable IPA cdtor due to bug in GCC and missing AVX2 support -- triggered by USE=lto"
-				append-ldflags -fdisable-ipa-cdtor
-			else
-				einfo "No GCC workaround required, system supports AVX2"
-			fi
-
-			# Linking only works when using ld.gold when LTO is enabled
-			mozconfig_annotate "forcing ld=gold due to USE=lto" --enable-linker=gold
-		fi
-
-		if [[ -n "${show_old_compiler_warning}" ]] ; then
-			# Checking compiler's major version uses CC variable. Because we allow
-			# user to control used compiler via USE=clang flag, we cannot use
-			# initial value. So this is the earliest stage where we can do this check
-			# because pkg_pretend is not called in the main phase function sequence
-			# environment saving is not guaranteed so we don't know if we will have
-			# correct compiler until now.
-			ewarn ""
-			ewarn "USE=lto requires up-to-date compiler (>=gcc-8 or >=clang-7)."
-			ewarn "You are on your own -- expect build failures. Don't file bugs using that unsupported configuration!"
-			ewarn ""
-			sleep 5
-		fi
-
-		mozconfig_annotate '+lto' --enable-lto=thin
-
-		if use pgo ; then
-			mozconfig_annotate '+pgo' MOZ_PGO=1
-		fi
-	else
-		# Avoid auto-magic on linker
-		if use clang ; then
-			# This is upstream's default
-			mozconfig_annotate "forcing ld=lld due to USE=clang" --enable-linker=lld
-		
-		## EDIT: Gold linker causes issues on ppc64
-		#elif tc-ld-is-gold ; then
-		#	mozconfig_annotate "linker is set to gold" --enable-linker=gold
-
-		else
-			mozconfig_annotate "linker is set to bfd" --enable-linker=bfd
-		fi
-	fi
-
-	# It doesn't compile on alpha without this LDFLAGS
-	use alpha && append-ldflags "-Wl,--no-relax"
-
-	# Add full relro support for hardened
-	if use hardened ; then
-		append-ldflags "-Wl,-z,relro,-z,now"
-		mozconfig_use_enable hardened hardening
-	fi
-
-	# Modifications to better support ARM, bug 553364
-	if use neon ; then
-		mozconfig_annotate '' --with-fpu=neon
-
-		if ! tc-is-clang ; then
-			# thumb options aren't supported when using clang, bug 666966
-			mozconfig_annotate '' --with-thumb=yes
-			mozconfig_annotate '' --with-thumb-interwork=no
-		fi
-	fi
-	if [[ ${CHOST} == armv*h* ]] ; then
-		mozconfig_annotate '' --with-float-abi=hard
-		if ! use system-libvpx ; then
-			sed -i -e "s|softfp|hard|" \
-				"${S}"/media/libvpx/moz.build
-		fi
-	fi
+	mozconfig_annotate "linker is set to bfd" --enable-linker=bfd
 
 	mozconfig_use_enable !bindist official-branding
 
-	#mozconfig_use_enable debug
-	#mozconfig_use_enable debug tests
-	#if ! use debug ; then
-	#	mozconfig_annotate 'disabled by Gentoo' --disable-debug-symbols
-	#else
-	#	mozconfig_annotate 'enabled by Gentoo' --enable-debug-symbols
-	#fi
-	# These are enabled by default in all mozilla applications
-	#mozconfig_annotate '' --with-system-nspr --with-nspr-prefix="${SYSROOT}${EPREFIX}"/usr
-	#mozconfig_annotate '' --with-system-nss --with-nss-prefix="${SYSROOT}${EPREFIX}"/usr
 	#mozconfig_annotate '' --x-includes="${SYSROOT}${EPREFIX}"/usr/include \
 	#	--x-libraries="${SYSROOT}${EPREFIX}"/usr/$(get_libdir)
 	mozconfig_annotate '' --prefix="${EPREFIX}"/usr
 	mozconfig_annotate '' --libdir="${EPREFIX}"/usr/$(get_libdir)
-	#mozconfig_annotate '' --disable-crashreporter
-	##EDIT: Don't do these on ppc64le
-	#mozconfig_annotate 'Gentoo default' --with-system-png
-	#mozconfig_annotate '' --enable-system-ffi
-	#mozconfig_annotate '' --disable-gconf
-	#mozconfig_annotate '' --with-intl-api
-	##EDIT: Don't do this on ppc64le
-	#mozconfig_annotate '' --enable-system-pixman
 
 	# Instead of the standard --build= and --host=, mozilla uses --host instead
 	# of --build, and --target intstead of --host.
@@ -432,36 +273,8 @@ src_configure() {
 	#	mozconfig_annotate '' --with-system-libevent="${SYSROOT}${EPREFIX}"/usr
 	#fi
 
-	##EDIT: Don't do this on ppc64le
-	#if ! use x86 && [[ ${CHOST} != armv*h* ]] ; then
-	#	mozconfig_annotate '' --enable-rust-simd
-	#fi
-
-	##EDIT: This is no longer needed as of Firefox 65. enable skia always.
-
-	## skia has no support for big-endian platforms
-	#if [[ $(tc-endian) == "big" ]] ; then
-	#	mozconfig_annotate 'big endian target' --disable-skia
-	#else
-	#	mozconfig_annotate '' --enable-skia
-	#fi
-	#mozconfig_annotate '' --enable-skia
-
-	## EDIT: Supposedly jemalloc works on PPC64le as of Firefox 65. Disable it anyways just to be safe.
 	mozconfig_annotate 'Potential ppc64le breakage' --disable-jemalloc
 
-	# use the gtk3 toolkit (the only one supported at this point)
-	# TODO: Will this result in automagic dependency on x11-libs/gtk+[wayland]?
-	#mozconfig_annotate '' --enable-default-toolkit=cairo-gtk3
-
-	#mozconfig_use_enable startup-notification
-	#mozconfig_use_enable system-sqlite
-	#mozconfig_use_with system-harfbuzz
-	#mozconfig_use_with system-harfbuzz system-graphite2
-	#mozconfig_use_with system-icu
-	#mozconfig_use_with system-jpeg
-	#mozconfig_use_with system-libvpx
-	#mozconfig_use_with system-webp
 	mozconfig_use_enable pulseaudio
 	# force the deprecated alsa sound code if pulseaudio is disabled
 	if use kernel_linux && ! use pulseaudio ; then
@@ -471,45 +284,20 @@ src_configure() {
 	# Disable built-in ccache support to avoid sandbox violation, #665420
 	# Use FEATURES=ccache instead!
 
-	##EDIT: not sure if needed on ppc64le.	
-	#mozconfig_annotate '' --without-ccache
-	#sed -i -e 's/ccache_stats = None/return None/' \
-	#	python/mozbuild/mozbuild/controller/building.py || \
-	#	die "Failed to disable ccache stats call"
+	mozconfig_annotate '' --without-ccache
+	sed -i -e 's/ccache_stats = None/return None/' \
+		python/mozbuild/mozbuild/controller/building.py || \
+		die "Failed to disable ccache stats call"
 
 	mozconfig_use_enable dbus
-
-	#mozconfig_use_enable wifi necko-wifi
-
-	#mozconfig_use_enable geckodriver
-
-	# enable JACK, bug 600002
-	#mozconfig_use_enable jack
 
 	# Enable/Disable eme support
 	use eme-free && mozconfig_annotate '+eme-free' --disable-eme
 
-	# Setup api key for location services
-	#echo -n "${_google_api_key}" > "${S}"/google-api-key
-	#mozconfig_annotate '' --with-google-api-keyfile="${S}/google-api-key"
-
-	#mozconfig_annotate '' --enable-extensions="${MEXTENSIONS}"
-
-	# disable webrtc for now, bug 667642
-	#use arm && mozconfig_annotate 'broken on arm' --disable-webrtc
-
-	# allow elfhack to work in combination with unstripped binaries
-	# when they would normally be larger than 2GiB.
-	#append-ldflags "-Wl,--compress-debug-sections=zlib"
-
-	#if use clang ; then
-		# https://bugzilla.mozilla.org/show_bug.cgi?id=1482204
-		# https://bugzilla.mozilla.org/show_bug.cgi?id=1483822
-	#	mozconfig_annotate 'elf-hack is broken when using Clang' --disable-elf-hack
-	#fi
-
 	echo "mk_add_options MOZ_OBJDIR=${BUILD_OBJ_DIR}" >> "${S}"/.mozconfig
 	echo "mk_add_options XARGS=/usr/bin/xargs" >> "${S}"/.mozconfig
+	echo 'mk_add_options MOZ_MAKE_FLAGS="-j4"' >> "${S}"/.mozconfig
+	echo "export RUSTC_OPT_LEVEL=2" >> "${S}"/.mozconfig
 
 	# Finalize and report settings
 	mozconfig_final
@@ -545,31 +333,6 @@ src_install() {
 	cp "${FILESDIR}"/gentoo-default-prefs.js-2 \
 		"${BUILD_OBJ_DIR}/dist/bin/browser/defaults/preferences/all-gentoo.js" \
 		|| die
-
-	# set dictionary path, to use system hunspell
-	echo "pref(\"spellchecker.dictionary_path\", \"${EPREFIX}/usr/share/myspell\");" \
-		>>"${BUILD_OBJ_DIR}/dist/bin/browser/defaults/preferences/all-gentoo.js" || die
-
-	# force the graphite pref if system-harfbuzz is enabled, since the pref cant disable it
-	if use system-harfbuzz ; then
-		echo "sticky_pref(\"gfx.font_rendering.graphite.enabled\",true);" \
-			>>"${BUILD_OBJ_DIR}/dist/bin/browser/defaults/preferences/all-gentoo.js" || die
-	fi
-
-	# force cairo as the canvas renderer on platforms without skia support
-	if [[ $(tc-endian) == "big" ]] ; then
-		echo "sticky_pref(\"gfx.canvas.azure.backends\",\"cairo\");" \
-			>>"${BUILD_OBJ_DIR}/dist/bin/browser/defaults/preferences/all-gentoo.js" || die
-		echo "sticky_pref(\"gfx.content.azure.backends\",\"cairo\");" \
-			>>"${BUILD_OBJ_DIR}/dist/bin/browser/defaults/preferences/all-gentoo.js" || die
-	fi
-
-	# Augment this with hwaccel prefs
-	if use hwaccel ; then
-		cat "${FILESDIR}"/gentoo-hwaccel-prefs.js-1 >> \
-		"${BUILD_OBJ_DIR}/dist/bin/browser/defaults/preferences/all-gentoo.js" \
-		|| die
-	fi
 
 	if ! use screenshot ; then
 		echo "pref(\"extensions.screenshots.disabled\", true);" >> \
