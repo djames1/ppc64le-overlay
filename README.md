@@ -9,3 +9,5 @@ To install this overlay, please run the following:
 * `www-client/firefox-bin`
     * I could not get Firefox built with portage to work without crashing when typing in the address bar. If I build outside of portage it works fine.
     * See https://github.com/djames1/firefox-ppc64le-bin
+    * Add the following to `/etc/portage/package.accept_keywords`:
+        * `www-client/firefox-bin::ppc64le ~ppc64`
