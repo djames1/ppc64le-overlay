@@ -109,10 +109,7 @@ DEPEND="${CDEPEND}
 	)
 	pulseaudio? ( media-sound/pulseaudio )
 	>=virtual/cargo-1.30.0
-	>=virtual/rust-1.30.0
-	wayland? ( >=x11-libs/gtk+-3.11:3[wayland] )
-	amd64? ( >=dev-lang/yasm-1.1 virtual/opengl )
-	x86? ( >=dev-lang/yasm-1.1 virtual/opengl )"
+	>=virtual/rust-1.30.0"
 
 # Due to a bug in GCC, profile guided optimization will produce
 # AVX2 instructions, bug #677052
