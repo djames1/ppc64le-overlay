@@ -6,10 +6,6 @@ To install this overlay, please run the following:
 `layman -o https://raw.githubusercontent.com/djames1/ppc64le-overlay/master/repository.xml -L -a ppc64le`
 
 ## List of Packages
-* `www-client/firefox`
-    * Gentoo by default builds with `--enable-release`. This causes segfaults on ppc64le. We build it with `--disable-release`.
-    * Disable gold linker as it will fail during linking on ppc64le
-    * Always enable skia as it is required in newer firefox. This will be helpful for big endian users.
-    * Disable `jemalloc`. Supposedly this isn't needed as of Firefox 65, but we do it anways to be safe.
-    * Set the `system-*` use flags not to be set by default.
-    * Set the keywords to `~ppc64`
+* `www-client/firefox-bin`
+    * I could not get Firefox built with portage to work without crashing when typing in the address bar. If I build outside of portage it works fine.
+    * See https://github.com/djames1/firefox-ppc64le-bin
