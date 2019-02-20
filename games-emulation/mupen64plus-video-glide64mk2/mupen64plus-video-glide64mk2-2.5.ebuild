@@ -69,7 +69,8 @@ src_compile() {
 		SDL_CFLAGS="$($(tc-getPKG_CONFIG) --cflags sdl2)"
 		SDL_LDLIBS="$($(tc-getPKG_CONFIG) --libs sdl2)"
 
-		NOSSE=$(usex cpu_flags_x86_sse 0 1)
+		#PPC override
+		NOSSE=1
 		HIRES=$(usex hires 1 0)
 		USE_FRAMESKIPPER=1
 		USE_GLES=$(usex gles2 1 0)
