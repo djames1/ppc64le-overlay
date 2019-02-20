@@ -1,21 +1,11 @@
---- a/DEPS
-+++ b/DEPS
-@@ -403,15 +403,15 @@ deps = {
-       'packages': [
-         {
-           'package': 'infra/tools/luci/isolate/${{platform}}',
--          'version': 'git_revision:bc125484b8513898f17bc2501ac5e95330f44a3b',
-+          'version': 'git_revision:ed999c8ac210539ae9d71f65436a2c47015712d5',
-         },
-         {
-           'package': 'infra/tools/luci/isolated/${{platform}}',
--          'version': 'git_revision:bc125484b8513898f17bc2501ac5e95330f44a3b',
-+          'version': 'git_revision:ed999c8ac210539ae9d71f65436a2c47015712d5',
-         },
-         {
-           'package': 'infra/tools/luci/swarming/${{platform}}',
--          'version': 'git_revision:bc125484b8513898f17bc2501ac5e95330f44a3b',
-+          'version': 'git_revision:ed999c8ac210539ae9d71f65436a2c47015712d5',
-         },
-       ],
-       'dep_type': 'cipd',
+--- a/DEPS	2019-02-20 16:29:30.095863660 -0500
++++ b/DEPS	2019-02-20 16:31:16.989165937 -0500
+@@ -103,7 +103,7 @@
+   'angle_root': 'src/third_party/angle',
+ 
+   # luci-go CIPD package version.
+-  'luci_go': 'git_revision:25958d48e89e980e2a97daeddc977fb5e2e1fb8c',
++  'luci_go': 'git_revision:ed999c8ac210539ae9d71f65436a2c47015712d5',
+ 
+   'android_git': 'https://android.googlesource.com',
+   'aomedia_git': 'https://aomedia.googlesource.com',
