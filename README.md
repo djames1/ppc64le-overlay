@@ -23,4 +23,5 @@ To install this overlay, please run the following:
     * Add the following to `/etc/portage/package.accept_keywords`:
         * `games-emulation/mupen64plus-core::ppc64le ~ppc64`
 	* `games-emulation/mupen64plus-rsp-hle::ppc64le ~ppc64`
-	* `games-emulation/mupen64plus-glide64m2::ppc64le ~ppc64`
+	* `games-emulation/mupen64plus-video-glide64m2::ppc64le ~ppc64`
+	* `games-emulation/mupen64plus-video-rice::ppc64le ~ppc64`
