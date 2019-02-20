@@ -18,7 +18,8 @@ To install this overlay, please run the following:
     * Add the following to `/etc/portage/package.accept_keywords`:
         * `mail-client/thunderbird-bin::ppc64le ~ppc64`
 
-* `games-emulation/mupen64plus-core`
-    * Applied patch to makefile to support ppc64le. Patch has been submitted to upstream
+* `games-emulation/mupen64plus-*`
+    * Applied patch to makefiles to support ppc64le. Patches have been submitted to upstream
     * Add the following to `/etc/portage/package.accept_keywords`:
         * `games-emulation/mupen64plus-core::ppc64le ~ppc64`
+	* `games-emulation/mupen64plus-rsp-hle::ppc64le ~ppc64`
