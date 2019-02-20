@@ -144,6 +144,10 @@ PATCHES=(
 	"${FILESDIR}/chromium-73-gcc-4.patch"
 	"${FILESDIR}/chromium-73-gcc-5.patch"
 	"${FILESDIR}/chromium-73-gcc-6.patch"
+	"${FILESDIR}/Binutils-download.py-PPC.patch"
+	"${FILESDIR}/Src-DEPS.patch"
+	"${FILESDIR}/0006-build-toolchain-allow-clang-on-ppc64.patch"
+	"${FILESDIR}/0001-build-download_nacl_toolchains.py-Honor-disable_nacl.patch"
 )
 
 pre_build_checks() {
