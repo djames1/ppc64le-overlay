@@ -12,8 +12,8 @@ SRC_URI="https://github.com/mupen64plus/${PN}/releases/download/${PV}/${MY_P}.ta
 
 LICENSE="GPL-2 LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="gles2 hires cpu_flags_x86_sse"
+KEYWORDS="~ppc64"
+IUSE="gles2 hires -cpu_flags_x86_sse"
 
 RDEPEND=">=games-emulation/mupen64plus-core-2.5:0=[gles2=]
 	media-libs/libpng:0=
@@ -77,8 +77,8 @@ src_compile() {
 		TXCDXTN=1
 	)
 
-	use amd64 && MAKEARGS+=( HOST_CPU=x86_64 )
-	use x86 && MAKEARGS+=( HOST_CPU=i386 )
+	#use amd64 && MAKEARGS+=( HOST_CPU=x86_64 )
+	#use x86 && MAKEARGS+=( HOST_CPU=i386 )
 
 	emake "${MAKEARGS[@]}" all
 }
