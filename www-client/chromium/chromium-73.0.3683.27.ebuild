@@ -92,9 +92,6 @@ DEPEND="${COMMON_DEPEND}
 "
 BDEPEND="
 	>=app-arch/gzip-1.7
-	!arm? (
-		dev-lang/yasm
-	)
 	dev-lang/perl
 	dev-util/gn
 	dev-vcs/git
@@ -360,7 +357,6 @@ src_prepare() {
 		third_party/speech-dispatcher
 		third_party/usb_ids
 		third_party/xdg-utils
-		third_party/yasm/run_yasm.py
 	)
 	if ! use system-ffmpeg; then
 		keeplibs+=( third_party/ffmpeg third_party/opus )
@@ -452,7 +448,6 @@ src_configure() {
 		openh264
 		re2
 		snappy
-		yasm
 		zlib
 	)
 	if use system-ffmpeg; then
