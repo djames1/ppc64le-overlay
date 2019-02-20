@@ -1,5 +1,5 @@
---- a/src/DEPS
-+++ b/src/DEPS
+--- a/DEPS
++++ b/DEPS
 @@ -403,15 +403,15 @@ deps = {
        'packages': [
          {
