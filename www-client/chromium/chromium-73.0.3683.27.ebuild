@@ -187,9 +187,6 @@ PATCHES=(
   "${FILESDIR}/0001-Add-support-for-PPC64-in-build_config.h.patch"
   "${FILESDIR}/0001-Add-support-for-ppc64.patch"
   "${FILESDIR}/0001-DONTMERGE-Disable-v8-unit-tests.patch"
-  "${FILESDIR}/0001-PPC-s390-iwyu-Remove-include-heap-inl.h-counters.h.patch"
-  "${FILESDIR}/0001-Fix-build-issues-on-64k-systems.patch"
-  "${FILESDIR}/0001-Add-spin-yield-support-for-ppc64.patch"
   "${FILESDIR}/0001-pdfium-allocator-Use-64k-page-sizes-on-ppc64.patch"
 )
 
