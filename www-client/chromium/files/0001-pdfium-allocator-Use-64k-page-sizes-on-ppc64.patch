@@ -12,8 +12,8 @@ Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
 
 diff --git a/third_party/base/allocator/partition_allocator/page_allocator.h b/third_party/base/allocator/partition_allocator/page_allocator.h
 index 308d09979114..f6566e2f0b0a 100644
---- a/third_party/base/allocator/partition_allocator/page_allocator_constants.h
-+++ b/third_party/base/allocator/partition_allocator/page_allocator_constants.h
+--- a/third_party/pdfium/third_party/base/allocator/partition_allocator/page_allocator_constants.h
++++ b/third_party/pdfium/third_party/base/allocator/partition_allocator/page_allocator_constants.h
 @@ -11,7 +11,7 @@
  
  namespace pdfium {
@@ -36,8 +36,8 @@ index 308d09979114..f6566e2f0b0a 100644
  #endif
 diff --git a/third_party/base/allocator/partition_allocator/partition_alloc_constants.h b/third_party/base/allocator/partition_allocator/partition_alloc_constants.h
 index cd9108cec..d01edac1d 100644
---- a/third_party/base/allocator/partition_allocator/partition_alloc_constants.h
-+++ b/third_party/base/allocator/partition_allocator/partition_alloc_constants.h
+--- a/third_party/pdfium/third_party/base/allocator/partition_allocator/partition_alloc_constants.h
++++ b/third_party/pdfium/third_party/base/allocator/partition_allocator/partition_alloc_constants.h
 @@ -33,6 +33,8 @@ static const size_t kBucketShift = (kAllocationGranularity == 8) ? 3 : 2;
  // up against the end of a system page.
  #if defined(_MIPS_ARCH_LOONGSON)
