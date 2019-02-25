@@ -623,6 +623,7 @@ src_configure() {
   #Is this needed??
   #einfo "Configuring Chromium..."
 	#set -- gn gen --args="${myconf_gn} ${EXTRA_GN}" out/Release
+  gn args out/Release
 	echo "$@"
 	"$@" || die
 }
