@@ -620,8 +620,9 @@ src_configure() {
 		popd > /dev/null || die
 	fi
 
-	einfo "Configuring Chromium..."
-	set -- gn gen --args="${myconf_gn} ${EXTRA_GN}" out/Release
+  #Is this needed??
+  #einfo "Configuring Chromium..."
+	#set -- gn gen --args="${myconf_gn} ${EXTRA_GN}" out/Release
 	echo "$@"
 	"$@" || die
 }
