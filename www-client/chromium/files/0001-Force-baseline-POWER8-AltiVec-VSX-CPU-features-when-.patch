@@ -10,8 +10,8 @@ Subject: [PATCH] Force baseline POWER8 / AltiVec / VSX CPU features when on a
 
 diff --git a/BUILD.gn b/BUILD.gn
 index 62920cd76c..4d095dae11 100644
---- a/BUILD.gn
-+++ b/BUILD.gn
+--- a/v8/BUILD.gn
++++ b/v8/BUILD.gn
 @@ -540,6 +540,12 @@ config("toolchain") {
      }
      if (host_byteorder == "little") {
