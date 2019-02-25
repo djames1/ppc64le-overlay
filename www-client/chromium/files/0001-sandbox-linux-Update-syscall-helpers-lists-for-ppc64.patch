@@ -74,7 +74,7 @@ index 102647c14f14..670483fa40ae 100644
  // Ubuntu's version of glibc has a race condition in sem_post that can cause
  // it to call futex(2) with bogus op arguments. To workaround this, we need
  // to allow those futex(2) calls to fail with EINVAL, instead of crashing the
-@@ -228,7 +242,8 @@ ResultExpr RestrictFcntlCommands() {
+@@ -228,9 +241,11 @@ ResultExpr RestrictFcntlCommands() {
    // operator.
    // Glibc overrides the kernel's O_LARGEFILE value. Account for this.
    uint64_t kOLargeFileFlag = O_LARGEFILE;
@@ -83,8 +83,29 @@ index 102647c14f14..670483fa40ae 100644
 +      || IsArchitecturePPC64())
      kOLargeFileFlag = 0100000;
  
++
    const Arg<int> cmd(1);
-@@ -251,7 +266,7 @@ ResultExpr RestrictFcntlCommands() {
+   const Arg<long> long_arg(2);
+ 
+@@ -244,14 +259,23 @@ ResultExpr RestrictFcntlCommands() {
+               F_SETLKW,
+               F_GETLK,
+               F_DUPFD,
+-              F_DUPFD_CLOEXEC),
+-             Allow())
++              F_DUPFD_CLOEXEC
++#if defined(__powerpc64__)
++// On PPC64, F_SETLK, F_GETLK, F_SETLKW are defined as the 64-bit variants
++// but glibc will sometimes still use the 32-bit versions. Allow both.
++              ,
++              5, /* F_GETLK (32) */
++              6, /* F_SETLK (32) */
++              7  /* F_SETLKW (32) */
++#endif
++              ),
++            Allow())
+       .Case(F_SETFL,
+             If((long_arg & ~kAllowedMask) == 0, Allow()).Else(CrashSIGSYS()))
        .Default(CrashSIGSYS());
  }
  
