@@ -54,10 +54,10 @@ https://wiki.raptorcs.com/wiki/Porting/Chromium
  src/tools/linux/md2core/minidump-2-core.cc    | 45 +++++++++++++++
  25 files changed, 281 insertions(+), 35 deletions(-)
 
-diff --git a/src/client/linux/dump_writer_common/raw_context_cpu.h b/src/client/linux/dump_writer_common/raw_context_cpu.h
+diff --git a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/raw_context_cpu.h b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/raw_context_cpu.h
 index 07d9171a..9aed4cb3 100644
---- a/src/client/linux/dump_writer_common/raw_context_cpu.h
-+++ b/src/client/linux/dump_writer_common/raw_context_cpu.h
+--- a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/raw_context_cpu.h
++++ b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/raw_context_cpu.h
 @@ -44,6 +44,8 @@ typedef MDRawContextARM RawContextCPU;
  typedef MDRawContextARM64_Old RawContextCPU;
  #elif defined(__mips__)
@@ -67,10 +67,10 @@ index 07d9171a..9aed4cb3 100644
  #else
  #error "This code has not been ported to your platform yet."
  #endif
-diff --git a/src/client/linux/dump_writer_common/thread_info.cc b/src/client/linux/dump_writer_common/thread_info.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.cc b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.cc
 index aae1dc13..03afec7a 100644
---- a/src/client/linux/dump_writer_common/thread_info.cc
-+++ b/src/client/linux/dump_writer_common/thread_info.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.cc
 @@ -270,7 +270,42 @@ void ThreadInfo::FillCPUContext(RawContextCPU* out) const {
    out->float_save.fir = mcontext.fpc_eir;
  #endif
@@ -153,10 +153,10 @@ index aae1dc13..03afec7a 100644
 +#endif
 +
  }  // namespace google_breakpad
-diff --git a/src/client/linux/dump_writer_common/thread_info.h b/src/client/linux/dump_writer_common/thread_info.h
+diff --git a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.h b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.h
 index fb216fa6..fb669126 100644
---- a/src/client/linux/dump_writer_common/thread_info.h
-+++ b/src/client/linux/dump_writer_common/thread_info.h
+--- a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.h
++++ b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/thread_info.h
 @@ -68,6 +68,10 @@ struct ThreadInfo {
    // Use the structures defined in <sys/user.h>
    struct user_regs_struct regs;
@@ -180,10 +180,10 @@ index fb216fa6..fb669126 100644
  };
  
  }  // namespace google_breakpad
-diff --git a/src/client/linux/dump_writer_common/ucontext_reader.cc b/src/client/linux/dump_writer_common/ucontext_reader.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.cc b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.cc
 index 6ee6cc1e..477352e3 100644
---- a/src/client/linux/dump_writer_common/ucontext_reader.cc
-+++ b/src/client/linux/dump_writer_common/ucontext_reader.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.cc
 @@ -254,6 +254,48 @@ void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc) {
    out->float_save.fir = uc->uc_mcontext.fpc_eir;  // Unused.
  #endif
@@ -233,10 +233,10 @@ index 6ee6cc1e..477352e3 100644
  #endif
  
  }  // namespace google_breakpad
-diff --git a/src/client/linux/dump_writer_common/ucontext_reader.h b/src/client/linux/dump_writer_common/ucontext_reader.h
+diff --git a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.h b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.h
 index f830618f..6248818e 100644
---- a/src/client/linux/dump_writer_common/ucontext_reader.h
-+++ b/src/client/linux/dump_writer_common/ucontext_reader.h
+--- a/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.h
++++ b/third_party/breakpad/breakpad/src/client/linux/dump_writer_common/ucontext_reader.h
 @@ -54,6 +54,9 @@ struct UContextReader {
  #elif defined(__aarch64__)
    static void FillCPUContext(RawContextCPU *out, const ucontext_t *uc,
@@ -247,10 +247,10 @@ index f830618f..6248818e 100644
  #else
    static void FillCPUContext(RawContextCPU *out, const ucontext_t *uc);
  #endif
-diff --git a/src/client/linux/handler/exception_handler.cc b/src/client/linux/handler/exception_handler.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc b/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc
 index b895f6d7..901cd68f 100644
---- a/src/client/linux/handler/exception_handler.cc
-+++ b/src/client/linux/handler/exception_handler.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.cc
 @@ -461,9 +461,16 @@ bool ExceptionHandler::HandleSignal(int /*sig*/, siginfo_t* info, void* uc) {
      memcpy(&g_crash_context_.float_state, fp_ptr,
             sizeof(g_crash_context_.float_state));
@@ -300,10 +300,10 @@ index b895f6d7..901cd68f 100644
  #else
  #error "This code has not been ported to your platform yet."
  #endif
-diff --git a/src/client/linux/handler/exception_handler.h b/src/client/linux/handler/exception_handler.h
+diff --git a/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.h b/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.h
 index 1695a2b7..31441f42 100644
---- a/src/client/linux/handler/exception_handler.h
-+++ b/src/client/linux/handler/exception_handler.h
+--- a/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.h
++++ b/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler.h
 @@ -192,7 +192,11 @@ class ExceptionHandler {
      siginfo_t siginfo;
      pid_t tid;  // the crashing thread.
@@ -317,10 +317,10 @@ index 1695a2b7..31441f42 100644
      // #ifdef this out because FP state is not part of user ABI for Linux ARM.
      // In case of MIPS Linux FP state is already part of ucontext_t so
      // 'float_state' is not required.
-diff --git a/src/client/linux/handler/exception_handler_unittest.cc b/src/client/linux/handler/exception_handler_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler_unittest.cc b/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler_unittest.cc
 index 329d0147..32d7700c 100644
---- a/src/client/linux/handler/exception_handler_unittest.cc
-+++ b/src/client/linux/handler/exception_handler_unittest.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler_unittest.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/handler/exception_handler_unittest.cc
 @@ -307,7 +307,7 @@ TEST(ExceptionHandlerTest, ParallelChildCrashesDontHang) {
    }
  
@@ -352,10 +352,10 @@ index 329d0147..32d7700c 100644
    const int kOffset = kMemorySize - sizeof(kIllegalInstruction);
  
    const pid_t child = fork();
-diff --git a/src/client/linux/microdump_writer/microdump_writer.cc b/src/client/linux/microdump_writer/microdump_writer.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer.cc b/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer.cc
 index fa3c1713..6ce709e2 100644
---- a/src/client/linux/microdump_writer/microdump_writer.cc
-+++ b/src/client/linux/microdump_writer/microdump_writer.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer.cc
 @@ -138,7 +138,9 @@ class MicrodumpWriter {
                    const MicrodumpExtraInfo& microdump_extra_info,
                    LinuxDumper* dumper)
@@ -398,10 +398,10 @@ index fa3c1713..6ce709e2 100644
    const google_breakpad::fpstate_t* const float_state_;
  #endif
    LinuxDumper* dumper_;
-diff --git a/src/client/linux/microdump_writer/microdump_writer_unittest.cc b/src/client/linux/microdump_writer/microdump_writer_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer_unittest.cc b/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer_unittest.cc
 index c2fea022..8c62c524 100644
---- a/src/client/linux/microdump_writer/microdump_writer_unittest.cc
-+++ b/src/client/linux/microdump_writer/microdump_writer_unittest.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer_unittest.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/microdump_writer/microdump_writer_unittest.cc
 @@ -278,10 +278,19 @@ TEST(MicrodumpWriterTest, BasicWithMappings) {
    CrashAndGetMicrodump(mappings, MicrodumpExtraInfo(), &buf);
    ASSERT_TRUE(ContainsMicrodump(buf));
@@ -425,10 +425,10 @@ index c2fea022..8c62c524 100644
  #else
    ASSERT_NE(std::string::npos,
              buf.find("M 00001000 0000002A 00001000 "
-diff --git a/src/client/linux/minidump_writer/linux_core_dumper.cc b/src/client/linux/minidump_writer/linux_core_dumper.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_core_dumper.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_core_dumper.cc
 index 9bf2d2ef..18262496 100644
---- a/src/client/linux/minidump_writer/linux_core_dumper.cc
-+++ b/src/client/linux/minidump_writer/linux_core_dumper.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_core_dumper.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_core_dumper.cc
 @@ -111,6 +111,9 @@ bool LinuxCoreDumper::GetThreadInfoByIndex(size_t index, ThreadInfo* info) {
  #elif defined(__mips__)
    stack_pointer =
@@ -451,10 +451,10 @@ index 9bf2d2ef..18262496 100644
  #if defined(__ANDROID__)
          for (int i = EF_R0; i <= EF_R31; i++)
            info.mcontext.gregs[i - EF_R0] = status->pr_reg[i];
-diff --git a/src/client/linux/minidump_writer/linux_dumper.cc b/src/client/linux/minidump_writer/linux_dumper.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.cc
 index dbedecd5..f91f7f99 100644
---- a/src/client/linux/minidump_writer/linux_dumper.cc
-+++ b/src/client/linux/minidump_writer/linux_dumper.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.cc
 @@ -798,7 +798,9 @@ bool LinuxDumper::GetStackInfo(const void** stack, size_t* stack_len,
        reinterpret_cast<uint8_t*>(int_stack_pointer & ~(page_size - 1));
  
@@ -466,10 +466,10 @@ index dbedecd5..f91f7f99 100644
  
    const MappingInfo* mapping = FindMapping(stack_pointer);
    if (!mapping)
-diff --git a/src/client/linux/minidump_writer/linux_dumper.h b/src/client/linux/minidump_writer/linux_dumper.h
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.h b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.h
 index 76448fad..617ac6d0 100644
---- a/src/client/linux/minidump_writer/linux_dumper.h
-+++ b/src/client/linux/minidump_writer/linux_dumper.h
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.h
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper.h
 @@ -60,7 +60,8 @@ namespace google_breakpad {
   (defined(__mips__) && _MIPS_SIM == _ABIO32)
  typedef Elf32_auxv_t elf_aux_entry;
@@ -480,10 +480,10 @@ index 76448fad..617ac6d0 100644
  typedef Elf64_auxv_t elf_aux_entry;
  #endif
  
-diff --git a/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc b/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc
 index 3ad48e50..1688c365 100644
---- a/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc
-+++ b/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_dumper_unittest_helper.cc
 @@ -51,6 +51,8 @@
  #define TID_PTR_REGISTER "rcx"
  #elif defined(__mips__)
@@ -493,10 +493,10 @@ index 3ad48e50..1688c365 100644
  #else
  #error This test has not been ported to this platform.
  #endif
-diff --git a/src/client/linux/minidump_writer/linux_ptrace_dumper.cc b/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
 index e3ddb81a..fa28575e 100644
---- a/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
-+++ b/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
 @@ -149,19 +149,27 @@ bool LinuxPtraceDumper::CopyFromProcess(void* dest, pid_t child,
    return true;
  }
@@ -539,10 +539,10 @@ index e3ddb81a..fa28575e 100644
  #else
  #error "This code hasn't been ported to your platform yet."
  #endif
-diff --git a/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc b/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc
 index a4a0fd9b..52c15070 100644
---- a/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc
-+++ b/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper_unittest.cc
 @@ -457,6 +457,9 @@ TEST(LinuxPtraceDumperTest, VerifyStackReadWithMultipleThreads) {
  #elif defined(__mips__)
      pid_t* process_tid_location =
@@ -562,10 +562,10 @@ index a4a0fd9b..52c15070 100644
  #else
  #error This test has not been ported to this platform.
  #endif
-diff --git a/src/client/linux/minidump_writer/minidump_writer.cc b/src/client/linux/minidump_writer/minidump_writer.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.cc
 index 31e7bd62..ad36856d 100644
---- a/src/client/linux/minidump_writer/minidump_writer.cc
-+++ b/src/client/linux/minidump_writer/minidump_writer.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.cc
 @@ -136,7 +136,9 @@ class MinidumpWriter {
        : fd_(minidump_fd),
          path_(minidump_path),
@@ -619,10 +619,10 @@ index 31e7bd62..ad36856d 100644
    const google_breakpad::fpstate_t* const float_state_;  // ditto
  #endif
    LinuxDumper* dumper_;
-diff --git a/src/client/linux/minidump_writer/minidump_writer.h b/src/client/linux/minidump_writer/minidump_writer.h
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.h b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.h
 index d1dc3312..63d80592 100644
---- a/src/client/linux/minidump_writer/minidump_writer.h
-+++ b/src/client/linux/minidump_writer/minidump_writer.h
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.h
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer.h
 @@ -47,6 +47,8 @@ class ExceptionHandler;
  
  #if defined(__aarch64__)
@@ -632,10 +632,10 @@ index d1dc3312..63d80592 100644
  #elif !defined(__ARM_EABI__) && !defined(__mips__)
  typedef struct _libc_fpstate fpstate_t;
  #endif
-diff --git a/src/client/linux/minidump_writer/minidump_writer_unittest.cc b/src/client/linux/minidump_writer/minidump_writer_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer_unittest.cc b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer_unittest.cc
 index 583ddda8..5e3deccf 100644
---- a/src/client/linux/minidump_writer/minidump_writer_unittest.cc
-+++ b/src/client/linux/minidump_writer/minidump_writer_unittest.cc
+--- a/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer_unittest.cc
++++ b/third_party/breakpad/breakpad/src/client/linux/minidump_writer/minidump_writer_unittest.cc
 @@ -710,6 +710,9 @@ TEST(MinidumpWriterTest, InvalidStackPointer) {
  #elif defined(__mips__)
    context.context.uc_mcontext.gregs[MD_CONTEXT_MIPS_REG_SP] =
@@ -646,10 +646,10 @@ index 583ddda8..5e3deccf 100644
  #else
  # error "This code has not been ported to your platform yet."
  #endif
-diff --git a/src/common/linux/memory_mapped_file.cc b/src/common/linux/memory_mapped_file.cc
+diff --git a/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file.cc b/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file.cc
 index 4e938269..f0ff15d9 100644
---- a/src/common/linux/memory_mapped_file.cc
-+++ b/src/common/linux/memory_mapped_file.cc
+--- a/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file.cc
++++ b/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file.cc
 @@ -65,8 +65,7 @@ bool MemoryMappedFile::Map(const char* path, size_t offset) {
    }
  
@@ -660,10 +660,10 @@ index 4e938269..f0ff15d9 100644
    struct kernel_stat st;
    if (sys_fstat(fd, &st) == -1 || st.st_size < 0) {
  #else
-diff --git a/src/common/linux/memory_mapped_file_unittest.cc b/src/common/linux/memory_mapped_file_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file_unittest.cc b/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file_unittest.cc
 index fad59f40..616496d6 100644
---- a/src/common/linux/memory_mapped_file_unittest.cc
-+++ b/src/common/linux/memory_mapped_file_unittest.cc
+--- a/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file_unittest.cc
++++ b/third_party/breakpad/breakpad/src/common/linux/memory_mapped_file_unittest.cc
 @@ -176,9 +176,10 @@ TEST_F(MemoryMappedFileTest, RemapAfterMap) {
  TEST_F(MemoryMappedFileTest, MapWithOffset) {
    // Put more data in the test file this time. Offsets can only be
@@ -678,10 +678,10 @@ index fad59f40..616496d6 100644
    for (size_t i = 0; i < data1_size; ++i) {
      data1[i] = i & 0x7f;
    }
-diff --git a/src/common/memory_allocator_unittest.cc b/src/common/memory_allocator_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/common/memory_allocator_unittest.cc b/third_party/breakpad/breakpad/src/common/memory_allocator_unittest.cc
 index 43c86314..27325b81 100644
---- a/src/common/memory_allocator_unittest.cc
-+++ b/src/common/memory_allocator_unittest.cc
+--- a/third_party/breakpad/breakpad/src/common/memory_allocator_unittest.cc
++++ b/third_party/breakpad/breakpad/src/common/memory_allocator_unittest.cc
 @@ -57,8 +57,9 @@ TEST(PageAllocatorTest, LargeObject) {
  
    EXPECT_EQ(0U, allocator.pages_allocated());
@@ -693,10 +693,10 @@ index 43c86314..27325b81 100644
    for (unsigned i = 1; i < 10; ++i) {
      uint8_t *p = reinterpret_cast<uint8_t*>(allocator.Alloc(i));
      ASSERT_FALSE(p == NULL);
-diff --git a/src/processor/exploitability_linux.cc b/src/processor/exploitability_linux.cc
+diff --git a/third_party/breakpad/breakpad/src/processor/exploitability_linux.cc b/third_party/breakpad/breakpad/src/processor/exploitability_linux.cc
 index ccc9f145..debaed4d 100644
---- a/src/processor/exploitability_linux.cc
-+++ b/src/processor/exploitability_linux.cc
+--- a/third_party/breakpad/breakpad/src/processor/exploitability_linux.cc
++++ b/third_party/breakpad/breakpad/src/processor/exploitability_linux.cc
 @@ -202,12 +202,14 @@ bool ExploitabilityLinux::EndedOnIllegalWrite(uint64_t instruction_ptr) {
    // Check architecture and set architecture variable to corresponding flag
    // in objdump.
@@ -712,10 +712,10 @@ index ccc9f145..debaed4d 100644
      default:
        // Unsupported architecture. Note that ARM architectures are not
        // supported because objdump does not support ARM.
-diff --git a/src/processor/exploitability_unittest.cc b/src/processor/exploitability_unittest.cc
+diff --git a/third_party/breakpad/breakpad/src/processor/exploitability_unittest.cc b/third_party/breakpad/breakpad/src/processor/exploitability_unittest.cc
 index 528ee5f2..72764d6c 100644
---- a/src/processor/exploitability_unittest.cc
-+++ b/src/processor/exploitability_unittest.cc
+--- a/third_party/breakpad/breakpad/src/processor/exploitability_unittest.cc
++++ b/third_party/breakpad/breakpad/src/processor/exploitability_unittest.cc
 @@ -104,6 +104,8 @@ ExploitabilityFor(const string& filename) {
  }
  
@@ -770,10 +770,10 @@ index 528ee5f2..72764d6c 100644
 +
  
  }  // namespace
-diff --git a/src/tools/linux/md2core/minidump-2-core.cc b/src/tools/linux/md2core/minidump-2-core.cc
+diff --git a/third_party/breakpad/breakpad/src/tools/linux/md2core/minidump-2-core.cc b/third_party/breakpad/breakpad/src/tools/linux/md2core/minidump-2-core.cc
 index 941586e9..49cdc3fc 100644
---- a/src/tools/linux/md2core/minidump-2-core.cc
-+++ b/src/tools/linux/md2core/minidump-2-core.cc
+--- a/third_party/breakpad/breakpad/src/tools/linux/md2core/minidump-2-core.cc
++++ b/third_party/breakpad/breakpad/src/tools/linux/md2core/minidump-2-core.cc
 @@ -76,6 +76,8 @@
    #define ELF_ARCH  EM_MIPS
  #elif defined(__aarch64__)
