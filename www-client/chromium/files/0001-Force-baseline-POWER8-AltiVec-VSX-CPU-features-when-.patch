@@ -12,16 +12,15 @@ diff --git a/BUILD.gn b/BUILD.gn
 index 62920cd76c..4d095dae11 100644
 --- a/v8/BUILD.gn
 +++ b/v8/BUILD.gn
-@@ -540,6 +540,12 @@ config("toolchain") {
+@@ -540,6 +540,11 @@
      }
      if (host_byteorder == "little") {
        defines += [ "V8_TARGET_ARCH_PPC_LE" ]
 +        cflags += [
-+        # Enable usage of AltiVec, VSX, and other POWER8 and higher features
-+        "-mcpu=power8",
-+        "-maltivec",
-+        "-mvsx",
-+      ]
++	  "-mcpu=power8",
++	  "-maltivec",
++	  "-mvsx",
++	]
      } else if (host_byteorder == "big") {
        defines += [ "V8_TARGET_ARCH_PPC_BE" ]
        if (current_os == "aix") {
