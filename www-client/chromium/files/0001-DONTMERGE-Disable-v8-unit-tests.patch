@@ -9,8 +9,8 @@ Subject: [PATCH] DONTMERGE: Disable v8 unit tests
 
 diff --git a/test/BUILD.gn b/test/BUILD.gn
 index 70c8b51fa3..0ec9a76c25 100644
---- a/test/BUILD.gn
-+++ b/test/BUILD.gn
+--- a/v8/test/BUILD.gn
++++ b/v8/test/BUILD.gn
 @@ -31,7 +31,7 @@ group("gn_all") {
      deps += [
        "cctest:cctest",
