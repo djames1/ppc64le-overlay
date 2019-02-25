@@ -5,7 +5,6 @@ Subject: [PATCH] Implement support for PPC64 on Linux
 
 This patch implements support for the PPC64 architecture on Linux hosts.
 ---
- CONTRIBUTORS                                  |   1 +
  minidump/minidump_context.h                   |  64 ++++++
  minidump/minidump_context_writer.cc           |  50 +++++
  minidump/minidump_context_writer.h            |  39 ++++
@@ -43,15 +42,6 @@ This patch implements support for the PPC64 architecture on Linux hosts.
  util/posix/signals_test.cc                    |  12 +-
  36 files changed, 932 insertions(+), 12 deletions(-)
 
-diff --git a/CONTRIBUTORS b/CONTRIBUTORS
-index 8724b7f3..8e29424e 100644
---- a/CONTRIBUTORS
-+++ b/CONTRIBUTORS
-@@ -13,3 +13,4 @@ Mark Mentovai <mark@chromium.org>
- Robert Sesek <rsesek@chromium.org>
- Scott Graham <scottmg@chromium.org>
- Joshua Peraza <jperaza@chromium.org>
-+Shawn Anastasio <shawn@anastas.io>
 diff --git a/third_party/crashpad/crashpad/minidump/minidump_context.h b/third_party/crashpad/crashpad/minidump/minidump_context.h
 index 3a3e603c..3118d9e9 100644
 --- a/third_party/crashpad/crashpad/minidump/minidump_context.h
