@@ -13,7 +13,7 @@ Subject: [PATCH] third_party/ffmpeg: Add pre-generated ppc64 configuration
  ffmpeg_generated.gni                          | 20 +++++++++++++++++++
  7 files changed, 53 insertions(+), 6 deletions(-)
 
-diff --git a/chromium/config/Chrome/linux/ppc64/config.h b/chromium/config/Chrome/linux/ppc64/config.h
+diff --git a/third_party/ffmpeg/chromium/config/Chrome/linux/ppc64/config.h b/third_party/ffmpeg/chromium/config/Chrome/linux/ppc64/config.h
 index 4c638112a3..a8ba5f8e04 100644
 --- a/third_party/ffmpeg/chromium/config/Chrome/linux/ppc64/config.h
 +++ b/third_party/ffmpeg/chromium/config/Chrome/linux/ppc64/config.h
