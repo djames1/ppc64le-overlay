@@ -1,0 +1,53 @@
+From 00096287b6f494ac5a682d255472683be1487b18 Mon Sep 17 00:00:00 2001
+From: Shawn Anastasio <shawnanastasio@yahoo.com>
+Date: Mon, 10 Sep 2018 04:05:16 -0500
+Subject: [PATCH 4/6] appcache: remove constexpr foror functions that use stl's
+ substr
+
+---
+ content/browser/appcache/appcache_manifest_parser.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/content/browser/appcache/appcache_manifest_parser.cc b/content/browser/appcache/appcache_manifest_parser.cc
+index 2b8cd3e6f4e8..d07cabf28fb8 100644
+--- a/content/browser/appcache/appcache_manifest_parser.cc
++++ b/content/browser/appcache/appcache_manifest_parser.cc
+@@ -71,7 +71,7 @@ constexpr bool IsTokenSeparator(char character) {
+ }
+ 
+ // Removes the characters at the beginning of the string up to a newline.
+-constexpr base::StringPiece TrimToFirstNewLine(base::StringPiece data) {
++base::StringPiece TrimToFirstNewLine(base::StringPiece data) {
+   size_t skip = 0;
+   while (skip < data.length() && !IsNewLine(data[skip]))
+     ++skip;
+@@ -79,7 +79,7 @@ constexpr base::StringPiece TrimToFirstNewLine(base::StringPiece data) {
+ }
+ 
+ // Removes whitespace characters at the beginning of the string.
+-constexpr base::StringPiece TrimStartingWhiteSpace(base::StringPiece data) {
++base::StringPiece TrimStartingWhiteSpace(base::StringPiece data) {
+   size_t skip = 0;
+   while (skip < data.length() && IsWhiteSpace(data[skip]))
+     ++skip;
+@@ -87,7 +87,7 @@ constexpr base::StringPiece TrimStartingWhiteSpace(base::StringPiece data) {
+ }
+ 
+ // Removes whitespace characters at the end of the string.
+-constexpr base::StringPiece TrimTrailingWhiteSpace(base::StringPiece data) {
++base::StringPiece TrimTrailingWhiteSpace(base::StringPiece data) {
+   size_t length = data.size();
+ 
+   while (length != 0) {
+@@ -104,7 +104,7 @@ constexpr base::StringPiece TrimTrailingWhiteSpace(base::StringPiece data) {
+ //
+ // Returns the first line, which is guaranteed not to include a newline, and the
+ // rest of the string, which may be empty.
+-constexpr std::pair<base::StringPiece, base::StringPiece> SplitOnNewLine(
++std::pair<base::StringPiece, base::StringPiece> SplitOnNewLine(
+     base::StringPiece data) {
+   size_t split = 0;
+   while (split < data.length() && !IsNewLine(data[split]))
+-- 
+2.17.1
+

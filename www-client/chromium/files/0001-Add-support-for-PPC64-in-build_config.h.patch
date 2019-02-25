@@ -1,0 +1,33 @@
+From 2fc0778c23b66980b8e0b58650688091e81969fc Mon Sep 17 00:00:00 2001
+From: Shawn Anastasio <shawnanastasio@yahoo.com>
+Date: Mon, 20 Aug 2018 14:54:15 -0500
+Subject: [PATCH] Add support for PPC64 in build_config.h
+
+---
+ build/build_config.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/build/build_config.h b/build/build_config.h
+index f0cb6d5..cc1763a 100644
+--- a/build/build_config.h
++++ b/build/build_config.h
+@@ -73,6 +73,16 @@
+ #define ARCH_CPU_MIPS64EL 1
+ #define ARCH_CPU_64_BITS 1
+ #endif
++#elif (defined(__PPC64__) || defined(__PPC__)) && defined(__BIG_ENDIAN__)
++#define ARCH_CPU_PPC64_FAMILY 1
++#define ARCH_CPU_PPC64 1
++#define ARCH_CPU_64_BITS 1
++#define ARCH_CPU_BIG_ENDIAN 1
++#elif defined(__PPC64__)
++#define ARCH_CPU_PPC64_FAMILY 1
++#define ARCH_CPU_PPC64 1
++#define ARCH_CPU_64_BITS 1
++#define ARCH_CPU_LITTLE_ENDIAN 1
+ #else
+ #error Please add support for your architecture in build/build_config.h
+ #endif
+-- 
+2.17.1
+

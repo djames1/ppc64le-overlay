@@ -1,0 +1,79 @@
+From 256604d99fb584d50e0d6b45337bae2c68f4cfa6 Mon Sep 17 00:00:00 2001
+From: Junliang Yan <jyan@ca.ibm.com>
+Date: Tue, 13 Nov 2018 14:54:19 -0500
+Subject: [PATCH] PPC/s390: [iwyu] Remove include heap-inl.h -> counters.h
+
+Port bd0a7fd64c11dc0ece65bddd2cd27266b8101bc7
+
+Original Commit Message:
+
+    This reduces the build steps after touching counters.h from 710 to 191, thus
+    detaching counters.h from the giant include cluster.
+
+R=marja@chromium.org, joransiu@ca.ibm.com, michael_dawson@ca.ibm.com
+BUG=v8:7490,v8:8238
+LOG=N
+
+Change-Id: I7694a21856c228c6d0335c1f1e5e9177c96cc7da
+Reviewed-on: https://chromium-review.googlesource.com/c/1333940
+Reviewed-by: Joran Siu <joransiu@ca.ibm.com>
+Commit-Queue: Junliang Yan <jyan@ca.ibm.com>
+Cr-Commit-Position: refs/heads/master@{#57485}
+---
+ src/builtins/ppc/builtins-ppc.cc   | 1 +
+ src/builtins/s390/builtins-s390.cc | 1 +
+ src/ppc/macro-assembler-ppc.cc     | 1 +
+ src/s390/macro-assembler-s390.cc   | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/src/builtins/ppc/builtins-ppc.cc b/src/builtins/ppc/builtins-ppc.cc
+index 8f03b257b4..bd7b8eb884 100644
+--- a/src/builtins/ppc/builtins-ppc.cc
++++ b/src/builtins/ppc/builtins-ppc.cc
+@@ -7,6 +7,7 @@
+ #include "src/assembler-inl.h"
+ #include "src/code-factory.h"
+ #include "src/code-stubs.h"
++#include "src/counters.h"
+ #include "src/debug/debug.h"
+ #include "src/deoptimizer.h"
+ #include "src/frame-constants.h"
+diff --git a/src/builtins/s390/builtins-s390.cc b/src/builtins/s390/builtins-s390.cc
+index 1a31a20533..443faaf8e7 100644
+--- a/src/builtins/s390/builtins-s390.cc
++++ b/src/builtins/s390/builtins-s390.cc
+@@ -7,6 +7,7 @@
+ #include "src/assembler-inl.h"
+ #include "src/code-factory.h"
+ #include "src/code-stubs.h"
++#include "src/counters.h"
+ #include "src/debug/debug.h"
+ #include "src/deoptimizer.h"
+ #include "src/frame-constants.h"
+diff --git a/src/ppc/macro-assembler-ppc.cc b/src/ppc/macro-assembler-ppc.cc
+index 7d0a9b7a9e..0879bd6e8b 100644
+--- a/src/ppc/macro-assembler-ppc.cc
++++ b/src/ppc/macro-assembler-ppc.cc
+@@ -13,6 +13,7 @@
+ #include "src/callable.h"
+ #include "src/code-factory.h"
+ #include "src/code-stubs.h"
++#include "src/counters.h"
+ #include "src/debug/debug.h"
+ #include "src/external-reference-table.h"
+ #include "src/frames-inl.h"
+diff --git a/src/s390/macro-assembler-s390.cc b/src/s390/macro-assembler-s390.cc
+index 41298818b4..ba5382dad9 100644
+--- a/src/s390/macro-assembler-s390.cc
++++ b/src/s390/macro-assembler-s390.cc
+@@ -13,6 +13,7 @@
+ #include "src/callable.h"
+ #include "src/code-factory.h"
+ #include "src/code-stubs.h"
++#include "src/counters.h"
+ #include "src/debug/debug.h"
+ #include "src/external-reference-table.h"
+ #include "src/frames-inl.h"
+-- 
+2.19.1
+
