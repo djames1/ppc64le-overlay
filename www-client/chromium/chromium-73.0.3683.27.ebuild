@@ -180,7 +180,6 @@ PATCHES=(
   "${FILESDIR}/0001-Apply-blink-64k-page-workaround-to-ppc64-systems.patch"
   "${FILESDIR}/0001-Force-baseline-POWER8-AltiVec-VSX-CPU-features-when-.patch"
   "${FILESDIR}/0001-third_party-boringssl-Properly-detect-ppc64le-in-BUI.patch"
-  "${FILESDIR}/0004-appcache-remove-constexpr-foror-functions-that-use-s.patch"
   "${FILESDIR}/HACK-third_party-libvpx-use-generic-gnu.patch"
   "${FILESDIR}/0001-Implement-ppc64-support-on-linux.patch"
   "${FILESDIR}/0001-WIP-ppc64-support.patch"
