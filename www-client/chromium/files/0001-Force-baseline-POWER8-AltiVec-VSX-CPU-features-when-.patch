@@ -12,7 +12,7 @@ diff --git a/BUILD.gn b/BUILD.gn
 index 62920cd76c..4d095dae11 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -523,6 +523,12 @@ config("toolchain") {
+@@ -540,6 +540,12 @@ config("toolchain") {
      }
      if (host_byteorder == "little") {
        defines += [ "V8_TARGET_ARCH_PPC_LE" ]
