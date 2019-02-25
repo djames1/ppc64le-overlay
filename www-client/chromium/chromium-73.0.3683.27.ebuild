@@ -185,7 +185,7 @@ PATCHES=(
   "${FILESDIR}/0001-Implement-support-for-PPC64-on-Linux.patch"
   "${FILESDIR}/0002-Include-cstddef-to-fix-build.patch"
   "${FILESDIR}/0001-Add-support-for-PPC64-in-build_config.h.patch"
-  "${FILESDIR}/0001-third_party-ffmpeg-Add-pre-generated-ppc64-configura.patch"
+  "${FILESDIR}/0001-Add-support-for-ppc64.patch"
   "${FILESDIR}/0001-DONTMERGE-Disable-v8-unit-tests.patch"
   "${FILESDIR}/0001-PPC-s390-iwyu-Remove-include-heap-inl.h-counters.h.patch"
   "${FILESDIR}/0001-Fix-build-issues-on-64k-systems.patch"
@@ -583,6 +583,7 @@ src_configure() {
 		ffmpeg_target_arch=$(usex neon arm-neon arm)
 	elif [[ $myarch = ppc64 ]] ; then
 		myconf_gn+=" target_cpu=\"ppc64le\""
+    ffmpeg_target_arch=ppc64
 	else
 		die "Failed to determine target arch, got '$myarch'."
 	fi
