@@ -182,7 +182,6 @@ PATCHES=(
   "${FILESDIR}/0001-third_party-boringssl-Properly-detect-ppc64le-in-BUI.patch"
   "${FILESDIR}/HACK-third_party-libvpx-use-generic-gnu.patch"
   "${FILESDIR}/0001-Implement-ppc64-support-on-linux.patch"
-  "${FILESDIR}/0001-WIP-ppc64-support.patch"
   "${FILESDIR}/0001-Implement-support-for-PPC64-on-Linux.patch"
   "${FILESDIR}/0002-Include-cstddef-to-fix-build.patch"
   "${FILESDIR}/0001-Add-support-for-PPC64-in-build_config.h.patch"
