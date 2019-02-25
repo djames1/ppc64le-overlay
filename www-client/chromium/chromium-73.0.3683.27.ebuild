@@ -157,7 +157,6 @@ PATCHES=(
   "${FILESDIR}/0001-sandbox-Enable-seccomp_bpf-for-ppc64.patch"
   "${FILESDIR}/0001-sandbox-linux-Implement-partial-support-for-ppc64-sy.patch"
   "${FILESDIR}/0001-sandbox-linux-seccomp-bpf-helpers-Fix-TCGETS-declara.patch"
-  "${FILESDIR}/0001-sandbox-linux-seccomp-bpf-helpers-Skip-vserver-sysca.patch"
   "${FILESDIR}/0001-services-service_manager-sandbox-linux-Fix-TCGETS-de.patch"
   "${FILESDIR}/0005-sandbox-linux-update-unit-test-for-ppc64.patch"
   "${FILESDIR}/0001-sandbox-linux-Update-syscall-helpers-lists-for-ppc64.patch"
