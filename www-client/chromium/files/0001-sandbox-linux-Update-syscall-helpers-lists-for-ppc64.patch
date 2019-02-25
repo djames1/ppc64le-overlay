@@ -558,20 +558,6 @@ index c31d5e9c13b3..7898be9e1863 100644
    // Big system V multiplexing system call.
    static bool IsSystemVIpc(int sysno);
  #endif
-diff --git a/sandbox/linux/services/syscall_wrappers.cc b/sandbox/linux/services/syscall_wrappers.cc
-index fcfd2aa129..f6eb32fb76 100644
---- a/sandbox/linux/services/syscall_wrappers.cc
-+++ b/sandbox/linux/services/syscall_wrappers.cc
-@@ -58,7 +58,7 @@ long sys_clone(unsigned long flags,
- #if defined(ARCH_CPU_X86_64)
-   return syscall(__NR_clone, flags, child_stack, ptid, ctid, tls);
- #elif defined(ARCH_CPU_X86) || defined(ARCH_CPU_ARM_FAMILY) || \
--    defined(ARCH_CPU_MIPS_FAMILY)
-+    defined(ARCH_CPU_MIPS_FAMILY) || defined(ARCH_CPU_PPC64_FAMILY)
-   // CONFIG_CLONE_BACKWARDS defined.
-   return syscall(__NR_clone, flags, child_stack, ptid, tls, ctid);
- #endif
-
 -- 
 2.17.1
 
