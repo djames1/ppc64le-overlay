@@ -28,7 +28,7 @@ inherit eutils pax-utils xdg-utils gnome2-utils mozlinguas-v2 nsplugins
 
 DESCRIPTION="Firefox Web Browser"
 SRC_URI="${SRC_URI}
-	ppc64? ( https://github.com/djames1/firefox-ppc64le-bin/raw/master/firefox-66.0.3.en-US.linux-powerpc64le.tar.bz2 )"
+	ppc64? ( https://github.com/djames1/firefox-ppc64le-bin/raw/master/firefox-67.0.en-US.linux-powerpc64le.tar.bz2 )"
 HOMEPAGE="https://www.mozilla.org/en-US/firefox/"
 RESTRICT="strip mirror"
 
