@@ -54,7 +54,7 @@ src_unpack() {
 
 src_install() {
 	local size sizes icon_path icon name
-	sizes="16 32 48 256"
+	sizes="16 32 48 128"
 	icon_path="${S}/browser/chrome/icons/default"
 	icon="${PN}"
 
