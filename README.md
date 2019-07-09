@@ -12,5 +12,8 @@ To install this overlay, please run the following:
 * `mail-client/thunderbird-bin`
     * See https://github.com/djames1/thunderbird-ppc64le-bin
 
+* `www-client/waterfox-bin`
+    * See https://github.com/djames1/waterfox-ppc64le-bin
+
 * `games-emulation/mupen64plus-*`
     * Applied patch to makefiles to support ppc64le. Patches have been merged upstream.
