@@ -5,11 +5,11 @@ EAPI=6
 MOZ_ESR=0
 
 # Can be updated using scripts/get_langs.sh from mozilla overlay
-# Missing when bumped : be
-MOZ_LANGS=( ach af an ar as ast az bg bn-BD bn-IN br bs ca cs cy da de
-el en en-GB en-US en-ZA eo es-AR es-CL es-ES es-MX et eu fa fi fr fy-NL
+# Missing when bumped : as be bn-BD bn-IN en-ZA mai ml or
+MOZ_LANGS=( ach af an ar ast az bg br bs ca cs cy da de
+el en en-GB en-US eo es-AR es-CL es-ES es-MX et eu fa fi fr fy-NL
 ga-IE gd gl gu-IN he hi-IN hr hsb hu hy-AM id is it ja kk km kn ko lt
-lv mai mk ml mr ms nb-NO nl nn-NO or pa-IN pl pt-BR pt-PT rm ro ru si sk sl
+lv mk mr ms nb-NO nl nn-NO pa-IN pl pt-BR pt-PT rm ro ru si sk sl
 son sq sr sv-SE ta te th tr uk uz vi xh zh-CN zh-TW )
 
 # Convert the ebuild version to the upstream mozilla version, used by mozlinguas
@@ -28,7 +28,7 @@ inherit eutils pax-utils xdg-utils gnome2-utils mozlinguas-v2 nsplugins
 
 DESCRIPTION="Firefox Web Browser"
 SRC_URI="${SRC_URI}
-	ppc64? ( https://github.com/djames1/firefox-ppc64le-bin/raw/master/firefox-67.0.en-US.linux-powerpc64le.tar.bz2 )"
+	ppc64? ( https://github.com/djames1/firefox-ppc64le-bin/releases/download/${PV}/firefox-${PV}.en-US.linux-powerpc64le.tar.bz2 )"
 HOMEPAGE="https://www.mozilla.org/en-US/firefox/"
 RESTRICT="strip mirror"
 
