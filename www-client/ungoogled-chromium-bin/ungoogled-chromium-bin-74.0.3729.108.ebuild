@@ -107,8 +107,6 @@ src_install() {
 		fperms 4755 "${CHROMIUM_HOME}/chrome-sandbox"
 	fi
 
-	doexe chromedriver
-
 	newexe "${FILESDIR}/${PN}-launcher-r3.sh" chromium-launcher.sh
 	sed -i "s:/usr/lib/:/usr/$(get_libdir)/:g" \
 		"${ED}${CHROMIUM_HOME}/chromium-launcher.sh" || die
@@ -120,8 +118,6 @@ src_install() {
 	dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/chromium
   # create google-chrome symlink for things that require it
   dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/google-chrome
-
-	dosym "${CHROMIUM_HOME}/chromedriver" /usr/bin/chromedriver
 
 	# Allow users to override command-line options (bug #357629)
 	insinto /etc/chromium
