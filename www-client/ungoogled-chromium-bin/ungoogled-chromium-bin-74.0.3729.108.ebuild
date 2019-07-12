@@ -61,7 +61,6 @@ RDEPEND="
 	x11-libs/libXtst
 	x11-libs/pango
 	x11-misc/xdg-utils
-	widevine? ( www-plugins/chrome-binary-plugins[widevine(-)] )
 	!www-client/chromium
 	!www-client/ungoogled-chromium
 "
