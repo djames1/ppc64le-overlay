@@ -94,18 +94,12 @@ pkg_pretend() {
 }
 
 pkg_setup() {
-	chromium_suid_sandbox_check_kernel_config
 }
 
 src_install() {
 	local CHROMIUM_HOME="/opt/chromium-browser"
 	exeinto "${CHROMIUM_HOME}"
 	doexe chrome
-
-	if use suid; then
-		newexe chrome_sandbox chrome-sandbox
-		fperms 4755 "${CHROMIUM_HOME}/chrome-sandbox"
-	fi
 
 	newexe "${FILESDIR}/${PN}-launcher-r3.sh" chromium-launcher.sh
 	sed -i "s:/usr/lib/:/usr/$(get_libdir)/:g" \
