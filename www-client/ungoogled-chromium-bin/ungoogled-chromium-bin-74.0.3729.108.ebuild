@@ -86,7 +86,7 @@ GTK+ icon theme.
 "
 
 QA_PREBUILT="*"
-S="${WORKDIR}/${MY_P}"
+S="${WORKDIR}/"
 
 pkg_pretend() {
 	# Protect against people using autounmask overzealously
