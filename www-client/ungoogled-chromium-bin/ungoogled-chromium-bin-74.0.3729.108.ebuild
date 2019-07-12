@@ -93,9 +93,6 @@ pkg_pretend() {
 	use ppc64 || die "${PN} only works on ppc64le"
 }
 
-pkg_setup() {
-}
-
 src_install() {
 	local CHROMIUM_HOME="/opt/chromium-browser"
 	exeinto "${CHROMIUM_HOME}"
