@@ -86,7 +86,7 @@ GTK+ icon theme.
 "
 
 QA_PREBUILT="*"
-S="${WORKDIR}/"
+S="${WORKDIR}/ungoogled-chromium-browser-stable-${PV}-1/"
 
 pkg_pretend() {
 	# Protect against people using autounmask overzealously
@@ -95,7 +95,7 @@ pkg_pretend() {
 
 src_install() {
 	local CHROMIUM_HOME="/opt/chromium-browser"
-	exeinto "${CHROMIUM_HOME}"
+    exeinto "${CHROMIUM_HOME}"
 	doexe chrome
 
 	newexe "${FILESDIR}/${PN}-launcher-r3.sh" chromium-launcher.sh
@@ -107,8 +107,8 @@ src_install() {
 	dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/chromium-browser
 	# keep the old symlink around for consistency
 	dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/chromium
-  # create google-chrome symlink for things that require it
-  dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/google-chrome
+	# create google-chrome symlink for things that require it
+	dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/google-chrome
 
 	# Allow users to override command-line options (bug #357629)
 	insinto /etc/chromium
@@ -121,11 +121,9 @@ src_install() {
 	insinto "${CHROMIUM_HOME}"
 	doins ./*.bin
 	doins ./*.pak
-	doins ./*.so
 	doins icudtl.dat
 
 	doins -r locales
-	doins -r resources
 
 	# Install icons and desktop entry
 	newicon -s 48 "product_logo_48.png" chromium-browser.png
