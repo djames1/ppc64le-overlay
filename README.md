@@ -6,12 +6,6 @@ To install this overlay, please run the following:
 `layman -o https://raw.githubusercontent.com/djames1/ppc64le-overlay/master/repository.xml -L -a ppc64le`
 
 ## List of Packages
-* `www-client/firefox-bin`
-    * See https://github.com/djames1/firefox-ppc64le-bin
-
-* `mail-client/thunderbird-bin`
-    * See https://github.com/djames1/thunderbird-ppc64le-bin
-
 * `www-client/waterfox-bin`
     * See https://github.com/djames1/waterfox-ppc64le-bin
 
