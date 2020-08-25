@@ -6,8 +6,5 @@ To install this overlay, please run the following:
 `layman -o https://raw.githubusercontent.com/djames1/ppc64le-overlay/master/repository.xml -L -a ppc64le`
 
 ## List of Packages
-* `www-client/waterfox-bin`
-    * See https://github.com/djames1/waterfox-ppc64le-bin
-
 * `www-client/ungoogled-chromium-bin`
     * See https://github.com/leo-lb/ungoogled-chromium
