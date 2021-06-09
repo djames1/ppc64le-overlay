@@ -7,4 +7,4 @@ To install this overlay, please run the following:
 
 ## List of Packages
 * `www-client/ungoogled-chromium-bin`
-    * See https://github.com/leo-lb/ungoogled-chromium
+    * See https://github.com/chromium-ppc64le/chromium-ppc64le
